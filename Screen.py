@@ -8,7 +8,7 @@ from random import sample
 global colors
 pygame.font.init()
 font = pygame.font.SysFont("Times New Roman", 30)
-colors = font.render("    ", True, (0,128,0), (160, 165, 160)), font.render(" 1 ", True, (0,0,255), (152, 157, 142)), font.render(" 2 ", True, (0,128,0), (152, 157, 142)), font.render(" 3 ", True, (200,0,0), (152, 157, 142)), font.render(" 4 ", True, (0,0,0), (152, 157, 142)), font.render(" 5 ", True, (0,0,0), (152, 157, 142)), font.render(" 6", True, (0,0,0)), font.render(" 7", True, (0,0,0)), font.render(" 8", True, (0,0,0)), font.render(" B", True, (255,0,0)), font.render(" X ", True, (200,0,25))
+colors = font.render("    ", True, (0,128,0), (160, 165, 160)), font.render(" 1 ", True, (0,0,255), (152, 157, 142)), font.render(" 2 ", True, (0,128,0), (152, 157, 142)), font.render(" 3 ", True, (200,0,0), (152, 157, 142)), font.render(" 4 ", True, (0,0,0), (152, 157, 142)), font.render(" 5 ", True, (0,0,0), (152, 157, 142)), font.render(" 6", True, (0,0,0)), font.render(" 7", True, (0,0,0)), font.render(" 8", True, (0,0,0)), font.render(" B", True, (255,0,0)), font.render(" X ", True, (200,0,25)), font.render("  ", True, (255,0,0))
 
 class cell:
     def __init__(self, x, y):
@@ -53,7 +53,7 @@ def main(xSize, ySize, nBombs):
     width = squareSize * (xSize+2)
 
 
-    screen = pygame.display.set_mode((height, width))
+    screen = pygame.display.set_mode((width, height))
     squares = [[cell(x, y) for y in range(ySize+2)] for x in range(xSize+2)]
 
 
@@ -158,8 +158,14 @@ def main(xSize, ySize, nBombs):
                 xCor, yCor = event.pos
                 xReal = math.floor(xCor/35)
                 yReal = math.floor(yCor/35)
-                if event.button==3 and squares[xReal][yReal].isClicked == False:
+                if event.button==3 and squares[xReal][yReal].isClicked == True:
+                    squares[xReal][yReal].color = colors[11]
+                    squares[xReal][yReal].isClicked = False
+
+                elif event.button==3 and squares[xReal][yReal].isClicked == False:
                     squares[xReal][yReal].color = colors[10]
+                    squares[xReal][yReal].isClicked = True
+
                 if event.button == 1:
                     if squares[xReal][yReal].isBomb == True:
                         screen.fill((200,0,0))
@@ -178,7 +184,6 @@ def main(xSize, ySize, nBombs):
                             squares[x][y].click(event.pos, (75, 77, 79))
                             if squares[x][y].isClicked == True:
                                 clicked +=1
-                                print(clicked)
                                 if clicked == (xSize)*(ySize)-nBombs:
                                     screen.fill((0,200,0))
                                     text = font.render("You Win!!", True, (255,255,255))
@@ -189,8 +194,6 @@ def main(xSize, ySize, nBombs):
                                     pygame.display.flip()
                                     time.sleep(3)
                                     return False
-
-                            #print(squares[x][y].connections)
                 
 
                      
@@ -202,5 +205,5 @@ def main(xSize, ySize, nBombs):
             
             pygame.display.flip()
 while True:
-    main(6, 6, 5)
+    main(8, 8, 10)
 
